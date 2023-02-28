@@ -34,9 +34,23 @@ jobs:
       - uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
           command: cat ./inventory/techzone-vm.ini | sed 's/./& /g'
-
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
+      
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
         with:
-          playbook: ./playbook/install-docker.yaml
-          directory: ./
+          python-version: 3.9
+
+      - name: Install dependencies Including Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible
+
+      - name: run playbook
+        run: |
+          ansible-playbook ./playbook/install-docker.yaml
+
+      # - name: Run playbook
+      #   uses: dawidd6/action-ansible-playbook@v2
+      #   with:
+      #     playbook: ./playbook/install-docker.yaml
+      #     directory: ./
