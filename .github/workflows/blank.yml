@@ -27,7 +27,7 @@ jobs:
       - name: decrypt vault
         uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
-          vault_key: "${{ secrets.VAULT_PASSWORD }}"
+          vault_key: "googleapple"
           command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
  
       - name: Run playbook
