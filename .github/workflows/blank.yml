@@ -33,7 +33,7 @@ jobs:
 
       - uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
-          command: echo ./inventory/techzone-vm.ini | sed 's/./& /g'
+          command: cat ./inventory/techzone-vm.ini | sed 's/./& /g'
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
