@@ -30,7 +30,8 @@ jobs:
         with: 
           vault_key: '${{ secrets.VAULT_PASSWORD }}'
           command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
-      - name: debug
+
+      - uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
           command: echo ./inventory/techzone-vm.ini | sed 's/./& /g'
 
