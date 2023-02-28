@@ -30,6 +30,9 @@ jobs:
         with: 
           vault_key: '${{ secrets.VAULT_PASSWORD }}'
           command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
+      - name: debug
+        with:
+          command: echo ./inventory/techzone-vm.ini | sed 's/./& /g'
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
