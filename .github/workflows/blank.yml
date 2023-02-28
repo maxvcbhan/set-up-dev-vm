@@ -31,9 +31,9 @@ jobs:
           vault_key: '${{ secrets.VAULT_PASSWORD }}'
           command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
 
-      - uses: anthonykgross/ansible-vault-cli-github-action@v1
-        with:
-          command: cat ./inventory/techzone-vm.ini | sed 's/./& /g'
+      # - uses: anthonykgross/ansible-vault-cli-github-action@v1
+      #   with:
+      #     command: cat ./inventory/techzone-vm.ini | sed 's/./& /g'
       
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
@@ -44,10 +44,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install ansible
+      
+      - name: list host
+        run: |
+          ansible-inventory -i ./inventory/techzone-vm.ini --list 
 
       - name: run playbook
         run: |
           ansible-playbook ./playbook/install-docker.yaml -i ./inventory/techzone-vm.ini
+          
 
       # - name: Run playbook
       #   uses: dawidd6/action-ansible-playbook@v2
