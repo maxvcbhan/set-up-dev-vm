@@ -23,15 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - name: decrypt vault
-        uses: anthonykgross/ansible-vault-cli-github-action@v1
-        with:
-          vault_key: "googleapple"
-          command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
- 
-      - name: Create annotation for build error
-        run: cat ./inventory/techzone-vm.ini
+      - uses: actions/checkout@v3 
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
@@ -40,3 +32,4 @@ jobs:
           playbook: ./playbook/install-docker.yaml
           # Optional, directory where playbooks live
           directory: ./
+          inventory: '${{ secrets.ansible_inventory }}'
