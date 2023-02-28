@@ -25,11 +25,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
  
-    - name: Run ansible playbook
-      uses: ministryofjustice/ansible-playbook-with-keyvault-action@v1.0
-      with:
-        ansible_creds: '${{secrets.VAULT_PASSWORD}}'
-        vault_password_filename: './inventory/techzone-vm.ini' 
-        ansible_dir: ${{ github.workspace }}
-        ansible_playbook: ./playbook/install-docker.yaml
-        ansible_inventory: ./inventory/techzone-vm.ini 
+      - name: Run ansible playbook
+        uses: ministryofjustice/ansible-playbook-with-keyvault-action@v1.0
+        with:
+          ansible_creds: '${{secrets.VAULT_PASSWORD}}'
+          vault_password_filename: './inventory/techzone-vm.ini' 
+          ansible_dir: ${{ github.workspace }}
+          ansible_playbook: ./playbook/install-docker.yaml
+          ansible_inventory: ./inventory/techzone-vm.ini 
