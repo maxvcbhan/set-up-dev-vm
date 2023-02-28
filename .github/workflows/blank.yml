@@ -47,7 +47,7 @@ jobs:
 
       - name: run playbook
         run: |
-          ansible-playbook ./playbook/install-docker.yaml
+          ansible-playbook ./playbook/install-docker.yaml -i ./inventory/techzone-vm.ini
 
       # - name: Run playbook
       #   uses: dawidd6/action-ansible-playbook@v2
