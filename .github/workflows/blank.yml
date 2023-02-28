@@ -24,12 +24,16 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
- 
-      - name: Run ansible playbook
-        uses: ministryofjustice/ansible-playbook-with-keyvault-action@v1.0
+      - name: decrypt vault
+        uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
-          ansible_creds: '${{secrets.VAULT_PASSWORD}}'
-          vault_password_filename: './inventory/techzone-vm.ini' 
-          ansible_dir: ${{ github.workspace }}
-          ansible_playbook: ./playbook/install-docker.yaml
-          ansible_inventory: ./inventory/techzone-vm.ini 
+          vault_key: ${{ secrets.VAULT_PASSWORD }}
+          command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
+ 
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          # Required, playbook filepath
+          playbook: ./playbook/install-docker.yaml
+          # Optional, directory where playbooks live
+          directory: ./
