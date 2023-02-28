@@ -29,7 +29,7 @@ jobs:
       - uses: anthonykgross/ansible-vault-cli-github-action@v1
         with: 
           vault_key: '${{ secrets.VAULT_PASSWORD }}'
-          command: echo '${{secrets.VAULT_PASSWORD}}' | sed 's/./& /g'
+          command: "ansible-vault decrypt ./inventory/techzone-vm.ini"
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
