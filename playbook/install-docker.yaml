@@ -1,0 +1,80 @@
+- name: Install docker and docker compose
+  hosts: webservers
+  strategy: debug
+  become: True
+  tasks:
+    - name: Upgrade all packages
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
+
+    - name: Install yum utils
+      ansible.builtin.dnf:
+        name: yum-utils
+        state: present
+
+    - name: Add docker ce stable repo
+      ansible.builtin.yum_repository:
+        name: docker-ce-stable
+        description: Docker cd stable centos stable repo
+        baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+        enabled: yes
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        nobest: true
+
+    - name: Remove podman buildah
+      ansible.builtin.dnf:
+        name:
+          - podman
+          - buildah
+        state: absent
+
+    - name: Update all installed packages using Yum module
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+        update_cache: yes
+        update_only: yes
+        nobest: true
+      register: yum_update_status
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        nobest: true
+
+    - name: Install docker
+      ansible.builtin.dnf:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        disable_gpg_check: true
+
+    - name: Start service docker
+      ansible.builtin.service:
+        name: docker.service
+        state: started
+        enabled: yes
+
+    - name: Check docker
+      ansible.builtin.command:
+        cmd: docker info
+      register: dockerinfo
+
+    - debug: msg="{{ dockerinfo.stdout }}"
+
+    - name: Check docker compose
+      ansible.builtin.command:
+        cmd: docker compose version
+      register: out
+
+    - debug: msg="{{ out.stdout }}"
